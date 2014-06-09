@@ -7,7 +7,7 @@
  * 
  * @author      Francisco Urioste <lpfuri@gmail.com>
  * @copyright	(c) 2013-2014 Francisco Urioste
- * @license		MIT
+ * @license	MIT
  */
 
 abstract class Kohana_Datable {
