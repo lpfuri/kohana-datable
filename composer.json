@@ -18,8 +18,5 @@
             "type": "vcs",
             "url": "https://github.com/lpfuri/kohana-datable"
         }
-    ],
-    "require": {
-        "lpfuri/kohana-datable": "dev-master"
-    }
+    ]
 }
