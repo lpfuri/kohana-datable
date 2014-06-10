@@ -7,7 +7,7 @@ return array
 		'sPaginationType' => 'full_numbers',
 		'sDom' => '<""p><"clear"><"H"lfr>t<"F"i>',
 		'bProcessing' => FALSE,
-        'bServerSide' => TRUE,
+		'bServerSide' => TRUE,
 		'sServerMethod' => 'POST',
 	),
 	'default_filters_settings' => array(
@@ -20,14 +20,14 @@ return array
 	),
 	// For column filter plugin
 	'default_fnServerData' => 'function(sUrl, aoData, fnCallback) {
-						            $.ajax({
-						                url: sUrl,
-						                success: fnCallback,
-						                data: aoData,
-						                type: "POST", 
-						                dataType: "json",
-						                cache: false
-						            });
-						        }',
+		$.ajax({
+			url: sUrl,
+			success: fnCallback,
+			data: aoData,
+			type: "POST", 
+			dataType: "json",
+			cache: false
+		});
+	}',
 	'langs_folder' => NULL,
 );

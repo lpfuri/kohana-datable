@@ -7,7 +7,7 @@
  * 
  * @author      Francisco Urioste <lpfuri@gmail.com>
  * @copyright	(c) 2013-2014 Francisco Urioste
- * @license		MIT
+ * @license	    MIT
  */
 
 abstract class Kohana_Datable {
@@ -25,13 +25,13 @@ abstract class Kohana_Datable {
 	protected $_object;
 	
 	/**
-	 * Datatable columns info
+	 * Datatable columns data
 	 * @var array
 	 */
 	protected $_columns = array();
 	
 	/**
-	 * Datatable Javascript settings
+	 * Datatable javascript settings
 	 * @var array
 	 */
 	protected $_datatable_settings = array();
@@ -49,7 +49,7 @@ abstract class Kohana_Datable {
 	protected $_column_filters_enabled = FALSE;
 	
 	/**
-	 * Stores column filter settings
+	 * Stores column filter javascript settings
 	 * @var array
 	 */
 	protected $_column_filters_settings = array(); 
@@ -64,10 +64,11 @@ abstract class Kohana_Datable {
 	/**
 	* Selects the correct driver and creates an instance of it.
 	*
-	* @param   mixed  $object                     Database_Query_Builder_Select|ORM object
-    * @param   array  $datatable_settings         Settings of datatables plugin
-	* @param   array  $columns                    Table columns settings	
+	* @param   mixed  Database_Query_Builder_Select|ORM
+	* @param   mixed  NULL|array
+	* @param   mixed  NULL|array
 	* @return  mixed  Datable_Db|Datable_Orm
+	* @throws  Kohana_Exception
 	*/
 	public static function factory($object, array $datatable_settings = array(), array $columns = array())
 	{
@@ -87,22 +88,25 @@ abstract class Kohana_Datable {
 		
 		$driver_object = 'Datable_'.$object_type;
 		
-		return new $driver_object($object, $columns, $datatable_settings);
+		return new $driver_object($object, $datatable_settings, $columns);
 	}
 	
 	/**
-	 * Load class vars and add columns
-	 */
-	public function __construct($object, array $columns = array(), array $datatable_settings = array())
+	* Load class vars and add columns
+	* 
+	* @param   mixed  Database_Query_Builder_Select|ORM
+	* @param   mixed  NULL|array
+	* @param   mixed  NULL|array
+	*/
+	public function __construct($object, array $datatable_settings = array(), array $columns = array())
 	{	
 		// Class vars
 		$this->_config             = Kohana::$config->load('datable');
 		$this->_object             = $object;
-		$this->_columns            = $columns;
 		$this->_datatable_settings = Arr::merge($this->_config['default_datatable_settings'], $datatable_settings);
 		
 		// Add columns
-		foreach($this->_columns as $column_name => $settings) $this->add_column($column_name, $settings);
+		foreach($columns as $column_name => $settings) $this->add_column($column_name, $settings);
 	}
 	
 	/**
@@ -129,14 +133,14 @@ abstract class Kohana_Datable {
 	}
 	
 	/**
-	 * Adds a new column
+	 * Add column
 	 * 
-	 * @param   string  $name
-	 * @param   array   $settings
+	 * @param   string
+	 * @param   mixed   NULL|array
 	 * @return  mixed   Datable_Db|Datable_Orm
 	 */
 	public function add_column($name, array $settings = array())
-	{
+	{	
 		// Automatic turn off searching and sorting for columns with templates if necessary
 		if(isset($settings['template'])){
 				
@@ -162,9 +166,23 @@ abstract class Kohana_Datable {
 	}
 	
 	/**
+	 * Add/edit datatable setting
+	 * 
+	 * @param   string
+	 * @param   mixed   string|array
+	 * @return  mixed   Datable_Db|Datable_Orm
+	 */
+	public function setting($name, $setting)
+	{
+		$this->_datatable_settings[$name] = $setting;
+
+		return $this;
+	}
+	
+	/**
 	 * Enables Jovan's Popovic datatables column filter plugin.
 	 * 
-	 * @param   array  $settings                   Plugin initialization parameters
+	 * @param   mixed  NULL|array                   Plugin initialization parameters
 	 * @return  mixed  Datable_Db|Datable_Orm
 	 */
 	public function enable_column_filters(array $settings = array())
@@ -177,15 +195,15 @@ abstract class Kohana_Datable {
 	}
 	
 	/**
-	 * Set other plugins and settings
+	 * Set other plugins with its settings
 	 * 
-	 * @param   string  $plugin_name
-	 * @param   array   $settings
+	 * @param   string
+	 * @param   mixed   NULL|array
 	 * @return  mixed   Datable_Db|Datable_Orm
 	 */
-	public function plugin($plugin_name, $settings = array())
+	public function plugin($name, $settings = array())
 	{
-		$this->_plugins[$plugin_name] = $settings;
+		$this->_plugins[$name] = $settings;
 		
 		return $this;
 	}
@@ -583,7 +601,7 @@ abstract class Kohana_Datable {
 	
 	
 	/**
-	 * Apply column string type template
+	 * Apply simple template
 	 * 
 	 * @param   mixed   $item
 	 * @param   string  $template

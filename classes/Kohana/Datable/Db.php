@@ -7,7 +7,7 @@ class Kohana_Datable_Db extends Datable {
 		
 	protected function _column_table_reference($column_name)
 	{
-		if(isset($this->_columns[$column_name]['template'])) return NUll;
+		//if(isset($this->_columns[$column_name]['template'])) return NUll;
 		
 		return isset($this->_columns[$column_name]['table_column']) ? $this->_columns[$column_name]['table_column'][0] : $column_name;
 	}

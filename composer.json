@@ -1,0 +1,25 @@
+{
+	"name": "lpfuri/kohana-datable",
+	"type": "kohana-module",
+	"description": "Kohana Module for jQuery DataTables plugin",
+	"homepage": "https://github.com/lpfuri/kohana-datable",
+	"license": "Apache",
+	"keywords": ["kohana", "datatables"],
+	"authors": [{
+		"name": "Francisco Urioste",
+		"role": "developer"
+	}],
+	"support": {
+		"issues": "https://github.com/lpfuri/kohana-datable/issues",
+		"source": "https://github.com/lpfuri/kohana-datable"
+	},
+	"repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/lpfuri/kohana-datable"
+        }
+    ],
+    "require": {
+        "lpfuri/kohana-datable": "dev-master"
+    }
+}
